@@ -1,20 +1,24 @@
-const resolvers = (db) => {
+const resolvers = (db) => ({
   Query: {
-    allCharacters() {
-      return [{ id: 1, name: 'allCharacters' }];
-    },
-    character() {
-      return { id: 1, name: 'character' };
+    characters(_,args) {
+      return  db.collection('characters').find(buildQueryParams(args)).toArray();
     },
   },
   Character: {
-    classes() {
-      return [
-        { className: 'fighter', level: 2 },
-        { className: 'wizard', level: 2 },
-      ];
+    classes(character) {
+      return character.classes;
     },
+    id(character) {
+      return character._id;
+    }
   },
-};
+});
 
+function buildQueryParams(args){
+  const params = {id:args.id};
+  if (args.name){
+      params.name= {$regex: args.name, $options: "$i"}
+  }
+  return params;
+}
 export default resolvers;

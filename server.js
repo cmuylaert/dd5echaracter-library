@@ -1,21 +1,44 @@
 import express from 'express';
-import { apolloServer } from 'graphql-tools';
 import Schema from './data/schema';
 import Resolvers from './data/resolvers';
+import {MongoClient} from 'mongodb';
+
+import { apolloExpress, graphiqlExpress } from 'apollo-server';
+import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
+import bodyParser from 'body-parser';
 
 const GRAPHQL_PORT = 8080;
 
-async function connection(){
+const server = express();
 
+(async ()=>{
+try{
+  let db = await MongoClient.connect('mongodb://graphql:password@ds143717.mlab.com:43717/5echaracters');
+
+    const executableSchema = makeExecutableSchema({
+    typeDefs: Schema,
+    resolvers: Resolvers(db),
+    allowUndefinedInResolve: false,
+    printErrors: true,
+  });
+
+  server.use('/graphql', bodyParser.json(), apolloExpress({
+    context:{},
+    schema: executableSchema,
+  }));
+
+  server.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql',
+  }));
+
+  server.listen(GRAPHQL_PORT, () => console.log(
+    `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+  ));
+
+  server.use(express.static(__dirname + '/dist'))
+
+  server.listen(3000, ()=> console.log("listening on port 3000"));
+} catch(error){
+  console.log(error);
 }
-
-const graphQLServer = express();
-graphQLServer.use('/graphql', apolloServer({
-  graphiql: true,
-  pretty: true,
-  schema: Schema,
-  resolvers: Resolvers(db),
-}));
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
-));
+})();

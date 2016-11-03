@@ -1,6 +1,6 @@
 export default`
 type Character {
-  id: Int!
+  id: ID!
   name: String!
   classes: [Class]
 }
@@ -9,8 +9,7 @@ type Class {
   level:Int!
 }
 type Query {
-  allCharacters: [Character]
-  character(id:Int,name:String,class:String):Character
+  characters(id:Int,name:String):[Character]
 }
 
 schema {
