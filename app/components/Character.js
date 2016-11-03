@@ -7,7 +7,9 @@ class Character extends React.Component {
       return previous + ((previous !="")?", ":"") +`${current.className} ${current.level}`;
     }, "");
     return (
-          <div>{char.name}  {classes} </div>
+       <div className="character">
+          <div className="name">{char.name} </div> <div className="classes"> {classes} </div>
+      </div>
     )
   }
 }

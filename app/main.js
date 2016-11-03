@@ -15,6 +15,9 @@ class Content extends React.Component{
           name:null
         };
   }
+  onNameChange = (name) => {
+    this.setState({name: name!=="" ? name : null})
+  }
   render() {
     return (
       <div className="app">
@@ -22,6 +25,7 @@ class Content extends React.Component{
           <div className="title">5E Character Library</div>
         </header>
         <div className="app-container">
+          <SearchForm onNameChange="{this.onNameChange}"/>
           <CharactersContainer name={this.state.name}/>
         </div>
       </div>

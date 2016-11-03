@@ -4,7 +4,6 @@ import Character from './Character';
 
 class Characters extends  React.Component{
   render () {
-    console.log(this.props.data);
     const characters = this.props.data.characters
     const loading = this.props.data.loading
     const characterList= characters? characters.map(elem => <Character key={elem.id} character={elem} />): null

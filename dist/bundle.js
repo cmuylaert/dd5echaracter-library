@@ -46745,11 +46745,21 @@
 	      }, "");
 	      return _react2.default.createElement(
 	        "div",
-	        null,
-	        char.name,
-	        "  ",
-	        classes,
-	        " "
+	        { className: "character" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "name" },
+	          char.name,
+	          " "
+	        ),
+	        " ",
+	        _react2.default.createElement(
+	          "div",
+	          { className: "classes" },
+	          " ",
+	          classes,
+	          " "
+	        )
 	      );
 	    }
 	  }]);

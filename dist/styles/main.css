@@ -84,26 +84,25 @@ header .sub-title {
 .character {
   background-color: #3c6084;
   border: 1px solid black;
-  border-radius: 25px;
-  width: 400px;
-  padding: 20px;
+  width: 200px;
+  padding: 5px;
   margin: 5px;
-  -webkit-box-shadow: 3px 3px 5px 0px rgba(145,145,145,1);
-  -moz-box-shadow: 3px 3px 5px 0px rgba(145,145,145,1);
-  box-shadow: 3px 3px 5px 0px rgba(145,145,145,1);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .character .name {
   background-color: #f3f3f3;
   text-transform: uppercase;
   text-align: center;
-  font-family: verdana;
   font-weight: bold;
   font-size: 2rem;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
 }
 
+.character .classes {
+
+}
 .character .type {
   text-align: center;
   color: #f3f3f3;
