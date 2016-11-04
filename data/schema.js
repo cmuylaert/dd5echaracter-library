@@ -1,18 +1,112 @@
-export default`
-type Character {
-  id: ID!
-  name: String!
-  classes: [Class]
-}
-type Class {
-  className:String!
-  level:Int!
-}
-type Query {
-  characters(id:Int,name:String):[Character]
+// export default`
+// type Character {
+//   id: ID!
+//   name: String!
+//   classes: [Class]
+// }
+// type Class {
+//   className:String!
+//   level:Int!
+// }
+// input ClassInput {
+//   className:String!
+//   level:Int!
+// }
+// type Query {
+//   characters(id:Int,name:String):[Character]
+// }
+// type Mutation {
+//   newCharacter(name: String!, classes:[ClassInput!]!):Character
+// }
+// schema {
+//   query: Query
+//   mutation:Mutation
+// }
+// `;
+import {
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLBoolean,
+  GraphQLFloat,
+  GraphQLEnumType,
+  GraphQLNonNull,
+  GraphQLInputObjectType
+} from 'graphql';
+
+const Schema = (db) => {
+function buildQueryParams(args){
+  const params = {id:args.id};
+  if (args.name){
+      params.name= {$regex: args.name, $options: "$i"}
+  }
+  return params;
 }
 
-schema {
-  query: Query
+const Class = new GraphQLObjectType({
+  name:"Class",
+  fields:()=>({
+    className: {type:GraphQLString},
+    level: {type:GraphQLInt},
+  })
+})
+const ClassInput = new GraphQLInputObjectType({
+  name:"ClassInput",
+  fields:()=>({
+    className: {type:GraphQLString},
+    level: {type:GraphQLInt},
+  })
+})
+const Character = new GraphQLObjectType({
+  name:"Character",
+  fields: ()=>({
+    id:{type:GraphQLString,
+       resolve:(char)=>char._id},
+    name: {type:GraphQLString},
+    classes: {type: new GraphQLList(Class)}
+  })
+});
+
+const Query = new GraphQLObjectType({
+  name:"Query",
+  fields:{
+    characters:{
+      type:new GraphQLList(Character),
+      args: {
+        name: {
+          description: 'Text search on name field',
+          type: GraphQLString
+        },
+      },
+      resolve: (root, params) => {
+        return  db.collection('characters').find(buildQueryParams(params)).toArray();
+      }
+    }
+  }
+});
+const Mutation = new GraphQLObjectType({
+  name:"Mutation",
+  fields: ()=> ({
+    newCharacter:{
+      type:Character,
+      args: {
+        name:{type:GraphQLString},
+        classes: {type:new GraphQLList(ClassInput)}
+      },
+      resolve: async (root, params) => {
+        const result = await db.collection('characters').insertOne(params);
+        return result.ops[0];
+      }
+    }
+  })
+})
+
+  return new GraphQLSchema({
+    query: Query,
+    mutation: Mutation
+  })
 }
-`;
+
+export default Schema

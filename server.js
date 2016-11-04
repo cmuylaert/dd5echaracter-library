@@ -4,7 +4,6 @@ import Resolvers from './data/resolvers';
 import {MongoClient} from 'mongodb';
 
 import { apolloExpress, graphiqlExpress } from 'apollo-server';
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import bodyParser from 'body-parser';
 
 const GRAPHQL_PORT = 8080;
@@ -14,17 +13,11 @@ const server = express();
 (async ()=>{
 try{
   let db = await MongoClient.connect('mongodb://graphql:password@ds143717.mlab.com:43717/5echaracters');
-
-    const executableSchema = makeExecutableSchema({
-    typeDefs: Schema,
-    resolvers: Resolvers(db),
-    allowUndefinedInResolve: false,
-    printErrors: true,
-  });
+  const schema = Schema(db);
 
   server.use('/graphql', bodyParser.json(), apolloExpress({
     context:{},
-    schema: executableSchema,
+    schema: schema,
   }));
 
   server.use('/graphiql', graphiqlExpress({
