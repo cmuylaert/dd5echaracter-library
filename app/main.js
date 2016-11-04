@@ -5,6 +5,7 @@ import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 
 import CharactersContainer from './containers/CharactersContainer';
+import SearchForm from './components/SearchForm';
 
 const client = new ApolloClient();
 
@@ -25,7 +26,7 @@ class Content extends React.Component{
           <div className="title">5E Character Library</div>
         </header>
         <div className="app-container">
-          <SearchForm onNameChange="{this.onNameChange}"/>
+          <SearchForm onNameChange={this.onNameChange}/>
           <CharactersContainer name={this.state.name}/>
         </div>
       </div>
