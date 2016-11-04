@@ -1,6 +1,5 @@
 import express from 'express';
 import Schema from './data/schema';
-import Resolvers from './data/resolvers';
 import {MongoClient} from 'mongodb';
 
 import { apolloExpress, graphiqlExpress } from 'apollo-server';
@@ -25,7 +24,7 @@ try{
   }));
 
   server.listen(GRAPHQL_PORT, () => console.log(
-    `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+    `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphiql`
   ));
 
   server.use(express.static(__dirname + '/dist'))

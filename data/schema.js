@@ -1,28 +1,3 @@
-// export default`
-// type Character {
-//   id: ID!
-//   name: String!
-//   classes: [Class]
-// }
-// type Class {
-//   className:String!
-//   level:Int!
-// }
-// input ClassInput {
-//   className:String!
-//   level:Int!
-// }
-// type Query {
-//   characters(id:Int,name:String):[Character]
-// }
-// type Mutation {
-//   newCharacter(name: String!, classes:[ClassInput!]!):Character
-// }
-// schema {
-//   query: Query
-//   mutation:Mutation
-// }
-// `;
 import {
   GraphQLList,
   GraphQLObjectType,

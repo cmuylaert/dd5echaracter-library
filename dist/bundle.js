@@ -66,7 +66,11 @@
 
 	var _CharactersContainer2 = _interopRequireDefault(_CharactersContainer);
 
-	var _SearchForm = __webpack_require__(255);
+	var _NewCharacterContainer = __webpack_require__(255);
+
+	var _NewCharacterContainer2 = _interopRequireDefault(_NewCharacterContainer);
+
+	var _SearchForm = __webpack_require__(257);
 
 	var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
@@ -117,6 +121,7 @@
 	          'div',
 	          { className: 'app-container' },
 	          _react2.default.createElement(_SearchForm2.default, { onNameChange: this.onNameChange }),
+	          _react2.default.createElement(_NewCharacterContainer2.default, { name: null, classes: null }),
 	          _react2.default.createElement(_CharactersContainer2.default, { name: this.state.name })
 	        )
 	      );
@@ -46787,13 +46792,249 @@
 	  value: true
 	});
 
+	var _templateObject = _taggedTemplateLiteral(['\nmutation NewCharacterMutation($name: String!, $classes: [ClassInput]) {\n  newCharacter(name:$name,classes:$classes)\n  {\n    id name classes {\n      className level\n    }\n  }\n}'], ['\nmutation NewCharacterMutation($name: String!, $classes: [ClassInput]) {\n  newCharacter(name:$name,classes:$classes)\n  {\n    id name classes {\n      className level\n    }\n  }\n}']);
+
+	var _reactApollo = __webpack_require__(243);
+
+	var _graphqlTag = __webpack_require__(251);
+
+	var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
+
+	var _NewCharacter = __webpack_require__(256);
+
+	var _NewCharacter2 = _interopRequireDefault(_NewCharacter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var NewCharacterMutation = (0, _graphqlTag2.default)(_templateObject);
+
+	exports.default = (0, _reactApollo.graphql)(NewCharacterMutation)(_NewCharacter2.default);
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(256);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ClassInput = function (_React$Component) {
+	  _inherits(ClassInput, _React$Component);
+
+	  function ClassInput(props) {
+	    _classCallCheck(this, ClassInput);
+
+	    var _this = _possibleConstructorReturn(this, (ClassInput.__proto__ || Object.getPrototypeOf(ClassInput)).call(this, props));
+
+	    _this.handleClassChange = function (e) {
+	      _this.props.update(_this.props.index, e.target.value);
+	    };
+
+	    _this.handleLevelChange = function (e) {
+	      _this.props.update(_this.props.index, undefined, e.target.value);
+	    };
+
+	    return _this;
+	  }
+
+	  _createClass(ClassInput, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        null,
+	        _react2.default.createElement(
+	          "select",
+	          { className: "classes", onChange: this.handleClassChange, defaultValue: "barbarian" },
+	          _react2.default.createElement(
+	            "option",
+	            { value: "barbarian" },
+	            "barbarian"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "bard" },
+	            "bard"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "cleric" },
+	            "cleric"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "druid" },
+	            "druid"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "fighter" },
+	            "fighter"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "monk" },
+	            "monk"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "paladin" },
+	            "paladin"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "rogue" },
+	            "rogue"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "sorcerer" },
+	            "sorcerer"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "warlock" },
+	            "warlock"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "wizard" },
+	            "wizard"
+	          )
+	        ),
+	        _react2.default.createElement("input", { onChange: this.handleLevelChange, type: "text", placeholder: "Level" })
+	      );
+	    }
+	  }]);
+
+	  return ClassInput;
+	}(_react2.default.Component);
+
+	var NewCharacter = function (_React$Component2) {
+	  _inherits(NewCharacter, _React$Component2);
+
+	  function NewCharacter(props) {
+	    _classCallCheck(this, NewCharacter);
+
+	    var _this2 = _possibleConstructorReturn(this, (NewCharacter.__proto__ || Object.getPrototypeOf(NewCharacter)).call(this, props));
+
+	    _this2.updateName = function (e) {
+	      _this2.setState({ newName: e.target.value });
+	    };
+
+	    _this2.updateClassValue = function (index, className, level) {
+	      var classInputValues = _this2.state.classInputValues || [];
+	      var oldClassName = classInputValues[index] ? classInputValues[index].className : "";
+	      var oldLevel = classInputValues[index] ? classInputValues[index].level : "";
+
+	      classInputValues[index] = {
+	        className: className ? className : oldClassName,
+	        level: level ? level : oldLevel
+	      };
+	      _this2.setState({ classInputValues: classInputValues });
+	    };
+
+	    _this2.addClassInput = function (e) {
+	      e.preventDefault();
+	      var classInputs = _this2.state.classInputs;
+	      var classInputValues = _this2.state.classInputValues;
+
+	      _this2.setState({
+	        classInputs: classInputs.concat(_react2.default.createElement(ClassInput, { key: classInputs.length, update: _this2.updateClassValue, index: classInputs.length })),
+	        classInputValues: classInputValues.concat({ className: "fighter", level: 0 })
+	      });
+	    };
+
+	    _this2.handleSubmit = function (e) {
+	      e.preventDefault();
+
+	      var classes = _this2.state.classInputValues.filter(function (value) {
+	        return value.level ? true : false;
+	      }).map(function (value) {
+	        return { className: value.className, level: Number(value.level) };
+	      });
+	      console.log(classes);
+
+	      _this2.props.mutate({ variables: { name: _this2.state.newName, classes: classes } });
+	      //TODO clean this mess; extract initialState to reuse.
+	      var resetState = {
+	        classInputs: [_react2.default.createElement(ClassInput, { key: "0", update: _this2.updateClassValue, index: "0" })],
+	        classInputValues: [{ className: "fighter", level: 0 }]
+	      };
+	      _this2.state = resetState;
+	      _this2.setState(resetState);
+	    };
+
+	    _this2.state = {
+	      newName: "",
+	      classInputs: [_react2.default.createElement(ClassInput, { key: "0", update: _this2.updateClassValue, index: "0" })],
+	      classInputValues: [{ className: "barbarian", level: null }]
+	    };
+	    return _this2;
+	  }
+
+	  _createClass(NewCharacter, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "form",
+	        null,
+	        _react2.default.createElement("input", { type: "text", placeholder: "Name", ref: "newName", onChange: this.updateName }),
+	        this.state.classInputs,
+	        _react2.default.createElement(
+	          "button",
+	          { onClick: this.addClassInput },
+	          " + "
+	        ),
+	        _react2.default.createElement(
+	          "button",
+	          { onClick: this.handleSubmit },
+	          "Add"
+	        )
+	      );
+	    }
+	  }]);
+
+	  return NewCharacter;
+	}(_react2.default.Component);
+
+	exports.default = NewCharacter;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lodash = __webpack_require__(258);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -46822,7 +47063,7 @@
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call.apply(_ref, [this].concat(args))), _this), _this.componentWillMount = function () {
 	      _this.delayedOnChangeName = (0, _lodash2.default)(function (evt) {
 	        _this.props.onNameChange(evt.target.value);
-	      }, 500);
+	      }, 250);
 	    }, _this.onChangeName = function (evt) {
 	      evt.persist();
 	      _this.delayedOnChangeName(evt);
@@ -46857,7 +47098,7 @@
 	exports.default = SearchForm;
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**

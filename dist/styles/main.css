@@ -44,7 +44,9 @@ header .sub-title {
   padding-right: 2%;
   width: 75%;
 }
-
+.classes {
+  text-transform: capitalize;   
+}
 
 /* SEACH FORM STYLE */
 
