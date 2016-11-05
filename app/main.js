@@ -8,8 +8,9 @@ import { Router, Route,  browserHistory } from 'react-router'
 import SearchCharacters from './components/SearchCharacters';
 import CharacterPage from './components/CharacterPage';
 
-const client = new ApolloClient();
-
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
@@ -17,7 +18,6 @@ ReactDOM.render(
       <Route path="/" component={SearchCharacters}>
       </Route>
       <Route path="/character/:characterId" component={CharacterPage}/>
-
     </Router>
     </ApolloProvider>,
   document.getElementById('content'));

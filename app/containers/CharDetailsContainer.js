@@ -14,13 +14,29 @@ const CharacterDetailsQuery = gql`query CharacterDetailsQuery (
     }
   }
 }`
-
+const UpdateCharacterMutation = gql`mutation UpdateCharacterMutation (
+  $character:CharacterInput!) {
+  updateCharacter(character:$character)  {
+    id name  background alignment race
+    classes {
+      className level
+    }
+  }
+}`
 const DeleteCharacterMutation = gql`
 mutation DeleteCharacterMutation($id:String!) {
   deleteCharacter(id:$id)
 }`;
 
-export default graphql(CharacterDetailsQuery, {
+export default
+graphql(UpdateCharacterMutation,{
+  props: ({ ownProps, mutate }) => ({
+    updateCharacter: ({ character }) => mutate({
+      variables: { character },
+    })
+  }),
+})(
+graphql(CharacterDetailsQuery, {
   options: ({ id, }) => {
     return { variables: {
                 id: id,
@@ -47,4 +63,4 @@ export default graphql(CharacterDetailsQuery, {
       },
     })
   }),
-})(CharacterDetails))
+})(CharacterDetails)))

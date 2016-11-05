@@ -20,7 +20,12 @@ class CharacterDetails extends React.Component {
   }
   updateCharacter = (e) => {
     e.preventDefault();
-    // this.props.updateCharacter({character:this.state});
+    const character= Object.keys(this.refs).reduce((result,key)=>{
+      result[key]=this.refs[key].value;
+      return result;
+    },{});
+    character.id=this.props.data.character.id;
+    this.props.updateCharacter({character});
   }
 
   render(){
@@ -35,7 +40,7 @@ class CharacterDetails extends React.Component {
               <div>
                 <h3 className="name"><input type="text" ref="name" defaultValue={this.state.name}/></h3>
                 <div className="classes"> {classes} </div>
-                <input type="text" ref="background" onChange={(e)=>{this.setState({background:e.target.value});}} placeholder="Background" defaultValue={this.state.background}/>
+                <input type="text" ref="background" placeholder="Background" defaultValue={this.state.background}/>
                 <button className="btn-delete"
                  role="button" title="Delete"
                  onClick={(e) => {if(confirm(`Delete ${character.name}?`)) {this.deleteCharacter(e)};}} > X </button>

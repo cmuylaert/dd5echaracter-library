@@ -9,7 +9,7 @@ class CharacterPage extends React.Component {
           <div className="title">5E Character Library</div>
         </header>
         <div className="app-container">
-          <CharDetailsContainer id={this.props.params.characterId} />
+          <CharDetailsContainer id={this.props.params.characterId} character={null}/>
         </div>
       </div>
 

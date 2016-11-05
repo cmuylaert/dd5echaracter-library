@@ -75,7 +75,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var client = new _apolloClient2.default();
+	var client = new _apolloClient2.default({
+	  dataIdFromObject: function dataIdFromObject(o) {
+	    return o.id;
+	  }
+	});
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactApollo.ApolloProvider,
@@ -53579,7 +53583,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app-container' },
-	          _react2.default.createElement(_CharDetailsContainer2.default, { id: this.props.params.characterId })
+	          _react2.default.createElement(_CharDetailsContainer2.default, { id: this.props.params.characterId, character: null })
 	        )
 	      );
 	    }
@@ -53604,7 +53608,8 @@
 	});
 	
 	var _templateObject = _taggedTemplateLiteral(['query CharacterDetailsQuery (\n  $id: String) {\n  character (\n    id: $id) {\n    id name  background alignment race\n    classes {\n      className level\n    }\n  }\n}'], ['query CharacterDetailsQuery (\n  $id: String) {\n  character (\n    id: $id) {\n    id name  background alignment race\n    classes {\n      className level\n    }\n  }\n}']),
-	    _templateObject2 = _taggedTemplateLiteral(['\nmutation DeleteCharacterMutation($id:String!) {\n  deleteCharacter(id:$id)\n}'], ['\nmutation DeleteCharacterMutation($id:String!) {\n  deleteCharacter(id:$id)\n}']);
+	    _templateObject2 = _taggedTemplateLiteral(['mutation UpdateCharacterMutation (\n  $character:CharacterInput!) {\n  updateCharacter(character:$character)  {\n    id name  background alignment race\n    classes {\n      className level\n    }\n  }\n}'], ['mutation UpdateCharacterMutation (\n  $character:CharacterInput!) {\n  updateCharacter(character:$character)  {\n    id name  background alignment race\n    classes {\n      className level\n    }\n  }\n}']),
+	    _templateObject3 = _taggedTemplateLiteral(['\nmutation DeleteCharacterMutation($id:String!) {\n  deleteCharacter(id:$id)\n}'], ['\nmutation DeleteCharacterMutation($id:String!) {\n  deleteCharacter(id:$id)\n}']);
 	
 	var _reactApollo = __webpack_require__(/*! react-apollo */ 243);
 	
@@ -53625,12 +53630,25 @@
 	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 	
 	var CharacterDetailsQuery = (0, _graphqlTag2.default)(_templateObject);
+	var UpdateCharacterMutation = (0, _graphqlTag2.default)(_templateObject2);
+	var DeleteCharacterMutation = (0, _graphqlTag2.default)(_templateObject3);
 	
-	var DeleteCharacterMutation = (0, _graphqlTag2.default)(_templateObject2);
-	
-	exports.default = (0, _reactApollo.graphql)(CharacterDetailsQuery, {
-	  options: function options(_ref) {
-	    var id = _ref.id;
+	exports.default = (0, _reactApollo.graphql)(UpdateCharacterMutation, {
+	  props: function props(_ref) {
+	    var ownProps = _ref.ownProps,
+	        mutate = _ref.mutate;
+	    return {
+	      updateCharacter: function updateCharacter(_ref2) {
+	        var character = _ref2.character;
+	        return mutate({
+	          variables: { character: character }
+	        });
+	      }
+	    };
+	  }
+	})((0, _reactApollo.graphql)(CharacterDetailsQuery, {
+	  options: function options(_ref3) {
+	    var id = _ref3.id;
 	
 	    return { variables: {
 	        id: id
@@ -53638,17 +53656,17 @@
 	    };
 	  }
 	})((0, _reactApollo.graphql)(DeleteCharacterMutation, {
-	  props: function props(_ref2) {
-	    var ownProps = _ref2.ownProps,
-	        mutate = _ref2.mutate;
+	  props: function props(_ref4) {
+	    var ownProps = _ref4.ownProps,
+	        mutate = _ref4.mutate;
 	    return {
-	      deleteCharacter: function deleteCharacter(_ref3) {
-	        var id = _ref3.id;
+	      deleteCharacter: function deleteCharacter(_ref5) {
+	        var id = _ref5.id;
 	        return mutate({
 	          variables: { id: id },
 	          updateQueries: {
-	            CharacterQuery: function CharacterQuery(prev, _ref4) {
-	              var mutationResult = _ref4.mutationResult;
+	            CharacterQuery: function CharacterQuery(prev, _ref6) {
+	              var mutationResult = _ref6.mutationResult;
 	
 	              var id = mutationResult.data.deleteCharacter;
 	              var index = void 0;
@@ -53668,7 +53686,7 @@
 	      }
 	    };
 	  }
-	})(_CharacterDetails2.default));
+	})(_CharacterDetails2.default)));
 
 /***/ },
 /* 317 */
@@ -53718,8 +53736,12 @@
 	
 	    _this.updateCharacter = function (e) {
 	      e.preventDefault();
-	      // this.props.updateCharacter({character:this.state});
-	      console.log(_this.state);
+	      var character = Object.keys(_this.refs).reduce(function (result, key) {
+	        result[key] = _this.refs[key].value;
+	        return result;
+	      }, {});
+	      character.id = _this.props.data.character.id;
+	      _this.props.updateCharacter({ character: character });
 	    };
 	
 	    _this.state = props.data.loading ? {} : _extends({}, props.data.character);
@@ -53761,9 +53783,7 @@
 	            classes,
 	            ' '
 	          ),
-	          _react2.default.createElement('input', { type: 'text', ref: 'background', onChange: function onChange(e) {
-	              _this2.setState({ background: e.target.value });
-	            }, placeholder: 'Background', defaultValue: this.state.background }),
+	          _react2.default.createElement('input', { type: 'text', ref: 'background', placeholder: 'Background', defaultValue: this.state.background }),
 	          _react2.default.createElement(
 	            'button',
 	            { className: 'btn-delete',
