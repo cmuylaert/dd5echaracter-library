@@ -66,7 +66,7 @@ class NewCharacter extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const classes = this.state.classInputValues.filter(value=>value.level?true:false).map((value) => { return {className:value.className,level:Number(value.level)};});
-    this.props.mutate({variables:{name:this.state.newName, classes:classes}} );
+    this.props.mutate({name:this.state.newName,classes:classes});
   //TODO clean this mess; extract initialState to reuse.
   const resetState= {
     classInputs: [<ClassInput key="0" update={this.updateClassValue} index="0"/>],
