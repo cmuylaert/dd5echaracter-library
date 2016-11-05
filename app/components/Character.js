@@ -8,7 +8,7 @@ class Character extends React.Component {
     }, "");
     return (
        <div className="character">
-          <div className="name">{char.name} </div> <div className="classes"> {classes} </div>
+          <h3 className="name">{char.name} </h3> <div className="classes"> {classes} </div>
       </div>
     )
   }

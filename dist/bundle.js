@@ -115,12 +115,12 @@
 	            'div',
 	            { className: 'title' },
 	            '5E Character Library'
-	          )
+	          ),
+	          _react2.default.createElement(_SearchForm2.default, { onNameChange: this.onNameChange })
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app-container' },
-	          _react2.default.createElement(_SearchForm2.default, { onNameChange: this.onNameChange }),
 	          _react2.default.createElement(_NewCharacterContainer2.default, { name: null, classes: null }),
 	          _react2.default.createElement(_CharactersContainer2.default, { name: this.state.name })
 	        )
@@ -46698,7 +46698,7 @@
 	      }) : null;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'characters' },
+	        { className: 'container characters' },
 	        loading ? _react2.default.createElement('div', { className: 'loader' }) : _react2.default.createElement(
 	          'div',
 	          { className: 'character-list' },
@@ -46760,7 +46760,7 @@
 	        "div",
 	        { className: "character" },
 	        _react2.default.createElement(
-	          "div",
+	          "h3",
 	          { className: "name" },
 	          char.name,
 	          " "
@@ -47076,7 +47076,7 @@
 	            "wizard"
 	          )
 	        ),
-	        _react2.default.createElement("input", { onChange: this.handleLevelChange, type: "text", placeholder: "Level" })
+	        _react2.default.createElement("input", { onChange: this.handleLevelChange, type: "number", placeholder: "Level" })
 	      );
 	    }
 	  }]);
@@ -47148,18 +47148,18 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "form",
-	        null,
+	        { className: "container" },
 	        _react2.default.createElement("input", { type: "text", placeholder: "Name", ref: "newName", onChange: this.updateName }),
 	        this.state.classInputs,
 	        _react2.default.createElement(
 	          "button",
-	          { onClick: this.addClassInput },
+	          { className: "btn-round btn-assertive", role: "button", title: "Add a class", onClick: this.addClassInput },
 	          " + "
 	        ),
 	        _react2.default.createElement(
 	          "button",
-	          { onClick: this.handleSubmit },
-	          "Add"
+	          { className: "btn-success", role: "button", onClick: this.handleSubmit },
+	          "Save Character"
 	        )
 	      );
 	    }
@@ -47230,10 +47230,20 @@
 	        { className: 'search-form' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'free-text-filters' },
-	          _react2.default.createElement('input', { className: 'name-filter',
+	          { className: 'container free-text-filters' },
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'icon-search' },
+	            _react2.default.createElement(
+	              'svg',
+	              { viewBox: '0 0 24 24', height: '100%', width: '100%' },
+	              _react2.default.createElement('path', { d: 'M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' })
+	            )
+	          ),
+	          _react2.default.createElement('input', { id: 'name-filter',
+	            className: 'name-filter',
 	            type: 'text',
-	            placeholder: 'Name',
+	            placeholder: 'Search',
 	            name: 'name',
 	            onChange: this.onChangeName })
 	        )

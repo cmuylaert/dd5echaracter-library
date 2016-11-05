@@ -25,9 +25,9 @@ class Content extends React.Component{
       <div className="app">
         <header>
           <div className="title">5E Character Library</div>
+          <SearchForm onNameChange={this.onNameChange}/>
         </header>
         <div className="app-container">
-          <SearchForm onNameChange={this.onNameChange}/>
           <NewCharacterContainer name={null} classes={null}/>
           <CharactersContainer name={this.state.name}/>
         </div>

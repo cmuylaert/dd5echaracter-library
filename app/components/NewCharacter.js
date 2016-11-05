@@ -26,7 +26,7 @@ class ClassInput extends React.Component {
           <option value="warlock">warlock</option>
           <option value="wizard">wizard</option>
         </select>
-        <input onChange={this.handleLevelChange} type="text" placeholder="Level" />
+        <input onChange={this.handleLevelChange} type="number" placeholder="Level" />
       </div>
     );
   }
@@ -79,12 +79,12 @@ class NewCharacter extends React.Component {
 
   render(){
     return (
-      <form>
+      <form className="container">
         <input type="text" placeholder="Name" ref="newName" onChange={this.updateName}/>
         {this.state.classInputs}
 
-        <button onClick={this.addClassInput} > + </button>
-        <button onClick={this.handleSubmit} >Add</button>
+        <button className="btn-round btn-assertive" role="button" title="Add a class" onClick={this.addClassInput} > + </button>
+        <button className="btn-success" role="button" onClick={this.handleSubmit} >Save Character</button>
       </form>
     )
 

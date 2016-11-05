@@ -8,7 +8,7 @@ class Characters extends  React.Component{
     const loading = this.props.data.loading
     const characterList= characters? characters.map(elem => <Character key={elem.id} character={elem} />): null
     return (
-          <div className="characters">
+          <div className="container characters">
             {loading ? <div className="loader"></div> :
             <div className="character-list">{characterList}</div> }
           </div>
