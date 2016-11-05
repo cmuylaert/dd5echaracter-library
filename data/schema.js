@@ -89,6 +89,19 @@ const Mutation = new GraphQLObjectType({
         const result = await db.collection('characters').insertOne(params);
         return result.ops[0];
       }
+    },
+    deleteCharacter:{
+      type:GraphQLBoolean,
+      args: {
+        id: {
+          type:GraphQLString,
+          description: 'delete by id',
+        }
+      },
+      resolve: async (root, params) => {
+        const result = await db.collection('characters').deleteOne({_id:ObjectID(params.id)});
+        return result.deletedCount>0;
+      }
     }
   })
 })
