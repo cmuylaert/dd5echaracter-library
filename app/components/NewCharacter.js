@@ -1,4 +1,5 @@
 import React from "react";
+import ClassSelect from './ClassSelect';
 
 class ClassInput extends React.Component {
   constructor(props) {
@@ -13,19 +14,7 @@ class ClassInput extends React.Component {
   render(){
     return (
       <div>
-        <select className="classes" onChange={this.handleClassChange} defaultValue="barbarian">
-          <option value="barbarian">barbarian</option>
-          <option value="bard">bard</option>
-          <option value="cleric">cleric</option>
-          <option value="druid">druid</option>
-          <option value="fighter">fighter</option>
-          <option value="monk">monk</option>
-          <option value="paladin">paladin</option>
-          <option value="rogue">rogue</option>
-          <option value="sorcerer">sorcerer</option>
-          <option value="warlock">warlock</option>
-          <option value="wizard">wizard</option>
-        </select>
+        <ClassSelect onSelect={this.handleClassChange} default="barbarian"/>
         <input onChange={this.handleLevelChange} type="number" placeholder="Level" />
       </div>
     );

@@ -23,9 +23,9 @@
     "eslint-plugin-import": "^1.1.0",
     "eslint-plugin-react": "^4.2.3",
     "graphql": "^0.5.0",
+    "immutability-helper": "^2.0.0",
     "lodash.debounce": "^4.0.8",
     "nodemon": "^1.9.1",
-    "react-addons-update": "^15.3.2",
     "react-router": "^3.0.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"

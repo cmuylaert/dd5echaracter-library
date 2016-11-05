@@ -12,7 +12,13 @@ input::-webkit-search-decoration,
 input::-webkit-search-cancel-button {
     display: none;
 }
-
+.character-details input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: inherit;
+    font-size: inherit;
+}
 .free-text-filters {
     cursor: text;
     height: 40px;
@@ -167,4 +173,16 @@ button {
 .btn-success::focus {
     background: #7fffcd;
     border: 1px solid #75ebbd;
+}
+.btn-delete {
+    position:fixed;
+    transition: .5s ease;
+    top: 10%;
+    left: 90%;
+}
+.btn-save {
+    position:fixed;
+    transition: .5s ease;
+    top: 15%;
+    left: 90%;
 }

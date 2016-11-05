@@ -43,7 +43,22 @@ const Character = new GraphQLObjectType({
     id:{type:GraphQLString,
        resolve:(char)=>char._id},
     name: {type:GraphQLString},
+    background: {type:GraphQLString},
+    race: {type:GraphQLString},
+    alignment: {type:GraphQLString},
     classes: {type: new GraphQLList(Class)}
+  })
+});
+const CharacterInput = new GraphQLInputObjectType({
+  name:"CharacterInput",
+  fields: ()=>({
+    id:{type:GraphQLString,
+       resolve:(char)=>char._id},
+    name: {type:GraphQLString},
+    background: {type:GraphQLString},
+    race: {type:GraphQLString},
+    alignment: {type:GraphQLString},
+    classes: {type: new GraphQLList(ClassInput)}
   })
 });
 
@@ -90,8 +105,22 @@ const Mutation = new GraphQLObjectType({
         return result.ops[0];
       }
     },
+    updateCharacter:{
+      type:Character,
+      args: {
+        character:{type:CharacterInput}
+      },
+      resolve: async (root, params) => {
+        const id = ObjectID(params.character.id);
+        delete params.character.id;
+        const result = await db.collection('characters').findOneAndUpdate({_id:id},
+         {$set:params.character},{returnOriginal:false});
+
+        return result.value;
+      }
+    },
     deleteCharacter:{
-      type:GraphQLBoolean,
+      type:GraphQLString,
       args: {
         id: {
           type:GraphQLString,
@@ -100,7 +129,7 @@ const Mutation = new GraphQLObjectType({
       },
       resolve: async (root, params) => {
         const result = await db.collection('characters').deleteOne({_id:ObjectID(params.id)});
-        return result.deletedCount>0;
+        return result.deletedCount>0?params.id:"Character ID not found";
       }
     }
   })

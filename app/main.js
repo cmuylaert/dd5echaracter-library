@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { Router, Route,  browserHistory } from 'react-router'
 
 import SearchCharacters from './components/SearchCharacters';
 import CharacterPage from './components/CharacterPage';
