@@ -11,6 +11,9 @@ import {
   GraphQLInputObjectType
 } from 'graphql';
 
+import {ObjectID} from 'mongodb';
+
+
 const Schema = (db) => {
 function buildQueryParams(args){
   const params = {id:args.id};
@@ -57,6 +60,18 @@ const Query = new GraphQLObjectType({
       },
       resolve: (root, params) => {
         return  db.collection('characters').find(buildQueryParams(params)).toArray();
+      }
+    },
+    character:{
+      type:Character,
+      args:{
+        id: {
+          type:GraphQLString,
+          description: 'search by id field',
+        }
+      },
+      resolve: (root, params) => {
+        return  db.collection('characters').findOne({_id:ObjectID(params.id)});
       }
     }
   }

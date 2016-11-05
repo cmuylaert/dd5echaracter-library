@@ -3,40 +3,21 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
+import { Router, Route, Link, browserHistory } from 'react-router'
 
-import CharactersContainer from './containers/CharactersContainer';
-import NewCharacterContainer from './containers/NewCharacterContainer';
-import SearchForm from './components/SearchForm';
+import SearchCharacters from './components/SearchCharacters';
+import CharacterPage from './components/CharacterPage';
 
 const client = new ApolloClient();
 
-class Content extends React.Component{
-  constructor(props) {
-      super(props);
-      this.state = {
-          name:null
-        };
-  }
-  onNameChange = (name) => {
-    this.setState({name: name!=="" ? name : null})
-  }
-  render() {
-    return (
-      <div className="app">
-        <header>
-          <div className="title">5E Character Library</div>
-          <SearchForm onNameChange={this.onNameChange}/>
-        </header>
-        <div className="app-container">
-          <NewCharacterContainer name={null} classes={null}/>
-          <CharactersContainer name={this.state.name}/>
-        </div>
-      </div>
-    );
-  }
-}
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-      <Content />
+    <Router history={browserHistory}>
+      <Route path="/" component={SearchCharacters}>
+      </Route>
+      <Route path="/character/:characterId" component={CharacterPage}/>
+
+    </Router>
     </ApolloProvider>,
   document.getElementById('content'));

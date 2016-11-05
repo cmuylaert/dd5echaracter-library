@@ -1,7 +1,7 @@
 module.exports = {
   context: `${__dirname}/app`,
   entry: './main.js',
-
+  devtool: 'source-map',
   output: {
     filename: 'bundle.js',
     path: `${__dirname}/dist`,
