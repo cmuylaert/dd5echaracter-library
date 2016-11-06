@@ -1,6 +1,34 @@
 import React from "react";
 import {browserHistory} from 'react-router'
+function calcModifier(attribute){
+    return Math.floor((attribute-10)/2)
+}
+class Attribute extends React.Component{
 
+    constructor(props){
+        super(props);
+        this.state= {modifier: this.props.defaultAttr?calcModifier(this.props.defaultAttr): 0} ;
+    }
+    onAttrChange=(e)=>{
+        const newValue = e.target.value;
+        this.props.onAttrChange(this.props.attrName, Number(newValue));
+        this.setState({modifier:calcModifier(newValue)});
+    };
+    render(){
+        return (
+            <div className="attibute">
+                <div className="name"> {this.props.attrName} </div>
+                <div className="value"><input type="number" placeholder="10" onChange={this.onAttrChange} defaultValue={this.props.defaultAttr}/></div>
+                <div className="modifier"> {this.state.modifier} </div>
+            </div>
+        );
+    }
+}
+Attribute.propTypes = {
+    onAttrChange: React.PropTypes.func.isRequired,
+    defaultValue:React.PropTypes.number,
+    attrName:React.PropTypes.string.isRequired
+};
 class CharacterDetails extends React.Component {
     constructor(props) {
         super(props);
@@ -28,13 +56,17 @@ class CharacterDetails extends React.Component {
         character.id = this.props.data.character.id;
         this.props.updateCharacter({character});
     };
-
+    onAttrChange=(attrName,newValue)=>{
+        const attributes = {...this.state.attributes };
+        attributes[attrName]=newValue;
+        this.setState({attributes});
+ 0   };
     render() {
         const loading = this.props.data.loading;
         const classes = loading ? null : this.state.classes.reduce((previous, current)=> {
             return previous + ((previous != "") ? ", " : "") + `${current.className} ${current.level}`;
         }, "");
-
+        console.log(this.state.attributes);
         return (
             <div>
                 {loading ? <div className="loader"></div> :
@@ -68,37 +100,13 @@ class CharacterDetails extends React.Component {
                             </button>
                         </div>
                         <div className="character character-attributes">
-                            <div className="attibute">
-                                <div className="name">STR</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div className="attibute">
-                                <div className="name">DEX</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div className="attibute">
-                                <div className="name">CON</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div className="attibute">
-                                <div className="name">INT</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div className="attibute">
-                                <div className="name">WIS</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div className="attibute">
-                                <div className="name">CHA</div>
-                                <div className="value"><input type="number" placeholder="10" /></div>
-                                <div className="modifier">0</div>
-                            </div>
-                            <div/>
+                            <Attribute onAttrChange={this.onAttrChange} attrName="STR" defaultAttr={null}  />
+                            <Attribute onAttrChange={this.onAttrChange} attrName="DEX" defaultAttr={null}  />
+                            <Attribute onAttrChange={this.onAttrChange} attrName="CON" defaultAttr={null}  />
+                            <Attribute onAttrChange={this.onAttrChange} attrName="INT" defaultAttr={null}  />
+                            <Attribute onAttrChange={this.onAttrChange} attrName="WIS" defaultAttr={null}  />
+                            <Attribute onAttrChange={this.onAttrChange} attrName="CHA" defaultAttr={null}  />
+
                         </div>
                     </div>
                         }
