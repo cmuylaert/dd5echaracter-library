@@ -13,12 +13,15 @@ import Users from './auth/users';
 import passportConfig from './auth/passportconfig';
 
 const GRAPHQL_PORT = 8080;
+const MONGODB_URL = process.env.MONGODB_URL;//ds143717.mlab.com:43717/5echaracters
+const DB_USER = process.env.DB_USER;//graphql
+const DB_PASSWORD = process.env.DB_PASSWORD;//password
 
 const app = express();
 
 (async ()=>{
 try{
-  const db = await MongoClient.connect('mongodb://graphql:password@ds143717.mlab.com:43717/5echaracters');
+  const db = await MongoClient.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${MONGODB_URL}`);
   const schema = Schema(db);
   const users = Users(db);
   passportConfig(passport,users);

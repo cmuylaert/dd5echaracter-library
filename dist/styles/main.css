@@ -18,7 +18,12 @@ h1, h2, h3, h4, h5, h6,
 p {
   font-family: 'Georgia,Cambria,"Times New Roman",Times,serif';
 }
+.row {
+  display: flex;
+}
+.row > * {
 
+}
 header, footer {
   padding-left: 2rem;
   padding-top: 1rem;
@@ -37,6 +42,10 @@ header {
   box-flex: 1;
   flex-grow: 1;
   flex-shrink: 1;
+}
+header a {
+  color: #f3f3f3;
+  padding-right: 1rem;
 }
 header .title {
   font-size: 1.2rem;
@@ -120,67 +129,11 @@ header .sub-title {
   box-sizing: border-box;
 }
 
-.character .stats .stat-block.top.left {
-  border-bottom: 2px solid #3c6084;
-  border-right: 2px solid #3c6084;
+.character-attributes{
+  justify-self: flex-start;
 }
 
-.character .stats .stat-block.top.right {
-  border-bottom: 2px solid #3c6084;
-  border-left: 2px solid #3c6084;
-}
 
-.character .stats .stat-block.bottom.left {
-  border-top: 2px solid #3c6084;
-  border-right: 2px solid #3c6084;
-}
-
-.character .stats .stat-block.bottom.right {
-  border-top: 2px solid #3c6084;
-  border-left: 2px solid #3c6084;
-}
-
-.character .stats .stat-block .title {
-  text-transform: uppercase;
-  color: #3c6084;
-  text-align: center;
-  font-weight: bold;
-}
-
-.character .stats .stat-block .content {
-  text-align: center;
-}
-
-.character .description {
-  line-height: 110%;
-  padding: 15px;
-  background-color: #f3f3f3;
-  margin-top: 20px;
-  text-align: justify;
-}
-
-.character .description.rounded {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.character .description .material {
-  margin-bottom: 1rem;
-}
-
-.character .higher-levels-title {
-  text-align: center;
-  color: #f3f3f3;
-}
-
-.character .higher-levels {
-  line-height: 110%;
-  padding: 15px;
-  background-color: #f3f3f3;
-  text-align: justify;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
 
 .character .classes {
   font-size: 14px;
