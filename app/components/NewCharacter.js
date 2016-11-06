@@ -72,8 +72,8 @@ class NewCharacter extends React.Component {
         <input type="text" placeholder="Name" ref="newName" onChange={this.updateName}/>
         {this.state.classInputs}
 
-        <button className="btn-round btn-assertive" role="button" title="Add a class" onClick={this.addClassInput} > + </button>
-        <button className="btn-success" role="button" onClick={this.handleSubmit} >Save Character</button>
+        <button className="btn btn-round btn-assertive" role="button" title="Add a class" onClick={this.addClassInput} > + </button>
+        <button className="btn btn-success" role="button" onClick={this.handleSubmit} >Save Character</button>
       </form>
     )
 

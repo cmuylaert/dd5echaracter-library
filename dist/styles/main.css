@@ -38,6 +38,7 @@ header {
   flex-direction: row;
   box-align: center;
   align-items: center;
+  justify-content: space-between;
   overflow: hidden;
   box-flex: 1;
   flex-grow: 1;
@@ -133,8 +134,27 @@ header .sub-title {
   justify-self: flex-start;
 }
 
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+.icon-bin path{
+  fill: #ff171d;
+}
+.btn-delete {
+  background-color: transparent;
+  border-style: hidden;
+}
+.btn-save{
+  background-color: transparent;
 
-
+  border-style: solid;
+  border-width: thin;
+}
 .character .classes {
   font-size: 14px;
   text-transform: capitalize;
