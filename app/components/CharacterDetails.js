@@ -47,7 +47,7 @@ class CharacterDetails extends React.Component {
                             <button className="btn-delete"
                                     role="button" title="Delete"
                                     onClick={(e) => {
-                                        if (confirm(`Delete ${character.name}?`)) {
+                                        if (confirm(`Delete ${this.state.name}?`)) {
                                             this.deleteCharacter(e)
                                         }
                                     }}>
