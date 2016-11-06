@@ -186,7 +186,9 @@ header .sub-title {
   font-size: 14px;
   text-transform: capitalize;
 }
-
+.logout {
+  align-self: flex-end;
+}
 /* LOADER STYLE */
 
 .loader {

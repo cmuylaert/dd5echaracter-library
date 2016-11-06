@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 module.exports = {
   context: `${__dirname}/app`,
   entry: './main.js',
@@ -6,6 +7,12 @@ module.exports = {
     filename: 'bundle.js',
     path: `${__dirname}/dist`,
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ],
   module: {
     loaders: [
       {
