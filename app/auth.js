@@ -29,7 +29,7 @@ export default {
     const ajaxRequest =
     $.ajax({
         type: "GET",
-        url: "logout",
+        url: "/logout",
       });
     ajaxRequest.done(function () {
     });

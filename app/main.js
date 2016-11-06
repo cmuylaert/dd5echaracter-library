@@ -8,7 +8,7 @@ import { Router, Route,  browserHistory } from 'react-router'
 import auth from './auth';
 
 import SearchCharacters from './components/SearchCharacters';
-import CharacterPage from './components/CharacterPage';
+import CharacterSheet from './components/CharacterSheet';
 import Signin from './components/Signin';
 
 const client = new ApolloClient({
@@ -37,7 +37,7 @@ ReactDOM.render(
       <Route path="/" component={SearchCharacters} onEnter={requireAuth}>
       </Route>
       <Route path="/login" component={SigninWrapper} />
-      <Route path="/character/:characterId" component={CharacterPage} onEnter={requireAuth}/>
+      <Route path="/character/:characterId" component={CharacterSheet} onEnter={requireAuth}/>
     </Router>
     </ApolloProvider>,
   document.getElementById('content'));

@@ -4,7 +4,6 @@ function calcModifier(attribute){
     return Math.floor((attribute-10)/2)
 }
 class Attribute extends React.Component{
-
     constructor(props){
         super(props);
         this.state= {modifier: this.props.defaultAttr?calcModifier(this.props.defaultAttr): 0} ;
