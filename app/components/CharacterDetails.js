@@ -65,7 +65,6 @@ class CharacterDetails extends React.Component {
         const classes = loading ? null : this.state.classes.reduce((previous, current)=> {
             return previous + ((previous != "") ? ", " : "") + `${current.className} ${current.level}`;
         }, "");
-        console.log(this.state.attributes);
         return (
             <div>
                 {loading ? <div className="loader"></div> :

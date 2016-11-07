@@ -1,3 +1,7 @@
+require('babel-register')({
+    presets: [ 'es2015','stage-0' ]
+});
+
 import express from 'express';
 import Schema from './data/schema';
 import {MongoClient} from 'mongodb';
@@ -38,7 +42,15 @@ try{
   // process the signup form
    app.post('/signup', passport.authenticate('local-signup', {
        failureFlash : true
-   }));
+   }), function(req, res, next) {
+           // handle success
+           console.log(req.user);
+           if (req.xhr) { return res.json({ id: req.user._id }); }
+           return res.redirect('/');
+       },
+       function(err, req, res, next) {
+           res.send(401, "signup failed");
+       });
    app.post('/login', passport.authenticate('local-login', {
         failureFlash : true,
         failWithError: true

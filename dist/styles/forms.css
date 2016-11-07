@@ -91,6 +91,17 @@ input::-webkit-input-placeholder {
     color: #999;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: #fff;
+    padding: 1rem;
+    align-items: flex-end;
+}
+.newcharacter-form{
+    align-items: stretch;
+}
 /* SEACH FORM STYLE */
 
 .search-form {
@@ -185,4 +196,7 @@ header .search-form {
     transition: .5s ease;
     top: 15%;
     left: 90%;
+}
+.error {
+    color:red;
 }

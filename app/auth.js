@@ -9,21 +9,42 @@ export default {
     const ajaxRequest =
     $.ajax({
         type: "POST",
-        url: "login",
+        url: "/login",
         data: JSON.stringify({username, password}),
         contentType: "application/json; charset=utf-8",
         dataType: "json"
       });
     ajaxRequest.done(function (data) {
          localStorage.token = data.id;
-         callback();
+         callback(true);
     });
     ajaxRequest.fail(function (error) {
       delete localStorage.token;
+        callback(false);
             console.log(error);
     });
 
   },
+    register(username, password, callback){
+        const ajaxRequest =
+            $.ajax({
+                type: "POST",
+                url: "/signup",
+                data: JSON.stringify({username, password}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+        ajaxRequest.done(function (data) {
+            localStorage.token = data.id;
+            callback(true);
+        });
+        ajaxRequest.fail(function (error) {
+            delete localStorage.token;
+            callback(false);
+            console.log(error);
+        });
+
+    },
   logout(){
     delete localStorage.token;
     const ajaxRequest =

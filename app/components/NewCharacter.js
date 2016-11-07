@@ -68,7 +68,7 @@ class NewCharacter extends React.Component {
 
   render(){
     return (
-      <form className="container">
+      <form className="container newcharacter-form">
         <input type="text" placeholder="Name" ref="newName" onChange={this.updateName}/>
         {this.state.classInputs}
 

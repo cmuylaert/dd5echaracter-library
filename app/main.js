@@ -17,13 +17,11 @@ const client = new ApolloClient({
 
 class SigninWrapper extends React.Component{
   render(){
-    return (<Signin login={auth.login}/>)
+    return (<Signin login={auth.login} register={auth.register}/>)
   }
 }
 function requireAuth(nextState, replace) {
-  console.log('requireAuth');
   if (!auth.isLoggedIn()) {
-    console.log('not logged in');
 
     replace({
       pathname: '/login',
