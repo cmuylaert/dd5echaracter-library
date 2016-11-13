@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 import Users from './auth/users';
 import passportConfig from './auth/passportconfig';
 import Schema from './data/schema';
-
+import Database from './data/database';
 
 const MONGODB_URL = process.env.MONGODB_URL;// ds143717.mlab.com:43717/5echaracters
 const DB_USER = process.env.DB_USER;// graphql
@@ -29,7 +29,9 @@ function isAuthenticated(req, res, next) {
 (async () => {
   try {
     const db = await MongoClient.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${MONGODB_URL}`);
-    const schema = Schema(db);
+    const dbClient = Database(db);
+
+    const schema = Schema(dbClient);
     const users = Users(db);
     passportConfig(passport, users);
 

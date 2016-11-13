@@ -7,28 +7,8 @@ import {
   GraphQLInputObjectType,
 } from 'graphql';
 
-import { ObjectID } from 'mongodb';
-
 
 const Schema = (db) => {
-  function buildQueryParams(args) {
-    const params = {};
-    if (args.name) {
-      params.name = { $regex: args.name, $options: '$i' };
-    }
-    return params;
-  }
-  function addUserParams(args, userId) {
-    return {
-      $and: [
-        { $or: [
-        { public: true },
-        { userid: userId.toString() },
-        ] },
-        args,
-      ] };
-  }
-
   const Class = new GraphQLObjectType({
     name: 'Class',
     fields: () => ({
@@ -79,7 +59,7 @@ const Schema = (db) => {
             type: GraphQLString,
           },
         },
-        resolve: (root, params, context) => db.collection('characters').find(addUserParams(buildQueryParams(params), context.userId)).toArray(),
+        resolve: (root, params, context) => db.findCharacters(params, context.userId),
       },
       character: {
         type: Character,
@@ -89,7 +69,7 @@ const Schema = (db) => {
             description: 'search by id field',
           },
         },
-        resolve: (root, params, context) => db.collection('characters').findOne(addUserParams({ _id: ObjectID(params.id) }, context.userId)),
+        resolve: (root, params, context) => db.findCharacterByID(params.id, context.userId),
       },
     },
   });
@@ -102,25 +82,14 @@ const Schema = (db) => {
           name: { type: GraphQLString },
           classes: { type: new GraphQLList(ClassInput) },
         },
-        resolve: async (root, params, context) => {
-          const result = await db.collection('characters').insertOne(Object.assign(params, { userid: context.userId.toString() }));
-          return result.ops[0];
-        },
+        resolve: async (root, params, context) => db.newCharacter(params,context.userId),
       },
       updateCharacter: {
         type: Character,
         args: {
           character: { type: CharacterInput },
         },
-        resolve: async (root, params, context) => {
-          const id = ObjectID(params.character.id);
-          // eslint-disable-next-line no-param-reassign
-          delete params.character.id;
-          const result = await db.collection('characters').findOneAndUpdate({ _id: id, userid: context.userId.toString() },
-         { $set: params.character }, { returnOriginal: false });
-
-          return result.value;
-        },
+        resolve: async (root, params, context) => db.updateCharacter(params, context.userId),
       },
       deleteCharacter: {
         type: GraphQLString,
@@ -130,10 +99,8 @@ const Schema = (db) => {
             description: 'delete by id',
           },
         },
-        resolve: async (root, params, context) => {
-          const result = await db.collection('characters').deleteOne({ _id: ObjectID(params.id), userid: context.userId.toString() });
-          return result.deletedCount > 0 ? params.id : 'Character ID not found';
-        },
+        resolve: async (root, params, context) => db.deleteCharacter(params.id,
+          context.userId),
       },
     }),
   });

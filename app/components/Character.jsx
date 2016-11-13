@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-function Character({character}) {
+function Character({ character }) {
   const classes = character.classes.reduce((previous, current) => `${previous + ((previous !== '') ? ', ' : '')}${current.className} ${current.level}`, '');
 
   return (
