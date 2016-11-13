@@ -1,61 +1,59 @@
 export default {
-  isLoggedIn(){
+  isLoggedIn() {
     return !!localStorage.token;
   },
-  getToken(){
+  getToken() {
     return localStorage.token;
   },
-  login(username, password, callback){
+  login(username, password, callback) {
     const ajaxRequest =
     $.ajax({
-        type: "POST",
-        url: "/login",
-        data: JSON.stringify({username, password}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json"
-      });
-    ajaxRequest.done(function (data) {
-         localStorage.token = data.id;
-         callback(true);
+      type: 'POST',
+      url: '/login',
+      data: JSON.stringify({ username, password }),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
     });
-    ajaxRequest.fail(function (error) {
+    ajaxRequest.done((data) => {
+      localStorage.token = data.id;
+      callback(true);
+    });
+    ajaxRequest.fail((error) => {
       delete localStorage.token;
-        callback(false);
-            console.log(error);
+      callback(false);
+      console.log(error);
     });
-
   },
-    register(username, password, callback){
-        const ajaxRequest =
+  register(username, password, callback) {
+    const ajaxRequest =
             $.ajax({
-                type: "POST",
-                url: "/signup",
-                data: JSON.stringify({username, password}),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
+              type: 'POST',
+              url: '/signup',
+              data: JSON.stringify({ username, password }),
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
             });
-        ajaxRequest.done(function (data) {
-            localStorage.token = data.id;
-            callback(true);
-        });
-        ajaxRequest.fail(function (error) {
-            delete localStorage.token;
-            callback(false);
-            console.log(error);
-        });
-
-    },
-  logout(){
+    ajaxRequest.done((data) => {
+      localStorage.token = data.id;
+      callback(true);
+    });
+    ajaxRequest.fail((error) => {
+      delete localStorage.token;
+      callback(false);
+      console.log(error);
+    });
+  },
+  logout() {
     delete localStorage.token;
     const ajaxRequest =
     $.ajax({
-        type: "GET",
-        url: "/logout",
-      });
-    ajaxRequest.done(function () {
+      type: 'GET',
+      url: '/logout',
     });
-    ajaxRequest.fail(function (error) {
+    ajaxRequest.done(() => {
+    });
+    ajaxRequest.fail((error) => {
       console.log(error);
     });
-  }
-}
+  },
+};

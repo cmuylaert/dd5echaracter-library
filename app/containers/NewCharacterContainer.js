@@ -14,8 +14,8 @@ mutation NewCharacterMutation($name: String!, $classes: [ClassInput]) {
   }
 }`;
 
-export default graphql(NewCharacterMutation,{
-  props: ({ ownProps, mutate }) => ({
+export default graphql(NewCharacterMutation, {
+  props: ({ mutate }) => ({
     mutate: ({ name, classes }) => mutate({
       variables: { name, classes },
       updateQueries: {
@@ -23,12 +23,12 @@ export default graphql(NewCharacterMutation,{
           const newCharacter = mutationResult.data.newCharacter;
           console.log(prev);
           return update(prev, {
-              characters: {
-                $unshift: [newCharacter],
-              },
+            characters: {
+              $unshift: [newCharacter],
+            },
           });
         },
       },
-    })
+    }),
   }),
 })(NewCharacter);

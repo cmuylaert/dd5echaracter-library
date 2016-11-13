@@ -13,13 +13,11 @@ const CharacterQuery = gql`query CharacterQuery (
       className,level
     }
   }
-}`
+}`;
 
 export default graphql(CharacterQuery, {
-  options: ({ name, }) => {
-    return { variables: {
-                name: name,
-              }
-            }
-  }
-})(Characters)
+  options: ({ name }) => ({ variables: {
+    name,
+  },
+  }),
+})(Characters);

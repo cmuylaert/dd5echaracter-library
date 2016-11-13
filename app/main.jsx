@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import { Router, Route,  browserHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router';
 
 import auth from './auth';
 
@@ -11,10 +11,12 @@ import SearchCharacters from './components/SearchCharacters';
 import CharacterSheet from './components/CharacterSheet';
 import Signin from './components/Signin';
 
-const networkInterface = createNetworkInterface({ uri: '/graphql',
+const networkInterface = createNetworkInterface({
+  uri: '/graphql',
   opts: {
     credentials: 'same-origin',
-  }});
+  },
+});
 
 networkInterface.use([{
   applyMiddleware(req, next) {
@@ -24,36 +26,32 @@ networkInterface.use([{
     // get the authentication token from local storage if it exists
     req.options.headers.authorization = auth.getToken() || null;
     next();
-  }
+  },
 }]);
 
 const client = new ApolloClient({
   dataIdFromObject: o => o.id,
-  networkInterface
+  networkInterface,
 });
 
 
-class SigninWrapper extends React.Component{
-  render(){
-    return (<Signin login={auth.login} register={auth.register}/>)
-  }
+function SigninWrapper() {
+  return (<Signin login={auth.login} register={auth.register} />);
 }
 function requireAuth(nextState, replace) {
   if (!auth.isLoggedIn()) {
-
     replace({
       pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
-    })
+      state: { nextPathname: nextState.location.pathname },
+    });
   }
 }
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Router history={browserHistory}>
-      <Route path="/" component={SearchCharacters} onEnter={requireAuth}>
-      </Route>
+      <Route path="/" component={SearchCharacters} onEnter={requireAuth} />
       <Route path="/login" component={SigninWrapper} />
-      <Route path="/character/:characterId" component={CharacterSheet} onEnter={requireAuth}/>
+      <Route path="/character/:characterId" component={CharacterSheet} onEnter={requireAuth} />
     </Router>
-    </ApolloProvider>,
+  </ApolloProvider>,
   document.getElementById('content'));

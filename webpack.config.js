@@ -1,7 +1,8 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
+
 module.exports = {
   context: `${__dirname}/app`,
-  entry: './main.js',
+  entry: './main.jsx',
   devtool: 'source-map',
   output: {
     filename: 'bundle.js',
@@ -9,14 +10,14 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    })
+      $: 'jquery',
+      jQuery: 'jquery',
+    }),
   ],
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -25,4 +26,8 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
+
 };
