@@ -23,6 +23,28 @@ const Schema = (db) => {
       level: { type: GraphQLInt },
     }),
   });
+  const Attributes = new GraphQLObjectType({
+    name: 'Attributes',
+    fields: () => ({
+      STR: { type: GraphQLInt },
+      DEX: { type: GraphQLInt },
+      CON: { type: GraphQLInt },
+      INT: { type: GraphQLInt },
+      WIS: { type: GraphQLInt },
+      CHA: { type: GraphQLInt },
+    }),
+  });
+  const AttributesInput = new GraphQLInputObjectType({
+    name: 'AttributesInput',
+    fields: () => ({
+      STR: { type: GraphQLInt },
+      DEX: { type: GraphQLInt },
+      CON: { type: GraphQLInt },
+      INT: { type: GraphQLInt },
+      WIS: { type: GraphQLInt },
+      CHA: { type: GraphQLInt },
+    }),
+  });
   const Character = new GraphQLObjectType({
     name: 'Character',
     fields: () => ({
@@ -33,6 +55,7 @@ const Schema = (db) => {
       race: { type: GraphQLString },
       alignment: { type: GraphQLString },
       classes: { type: new GraphQLList(Class) },
+      attributes: { type: Attributes},
     }),
   });
   const CharacterInput = new GraphQLInputObjectType({
@@ -45,6 +68,7 @@ const Schema = (db) => {
       race: { type: GraphQLString },
       alignment: { type: GraphQLString },
       classes: { type: new GraphQLList(ClassInput) },
+      attributes: { type: AttributesInput},
     }),
   });
 
