@@ -16,12 +16,19 @@ import cookieParser from 'cookie-parser';
 import Users from './auth/users';
 import passportConfig from './auth/passportconfig';
 
-const GRAPHQL_PORT = 8080;
 const MONGODB_URL = process.env.MONGODB_URL;//ds143717.mlab.com:43717/5echaracters
 const DB_USER = process.env.DB_USER;//graphql
 const DB_PASSWORD = process.env.DB_PASSWORD;//password
 
 const app = express();
+
+function isAuthenticated(req, res, next) {
+
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.send(401);
+}
 
 (async ()=>{
 try{
@@ -30,9 +37,18 @@ try{
   const users = Users(db);
   passportConfig(passport,users);
 
-  app.use(cookieParser());
+
+
+    app.use(express.static(__dirname + '/dist'))
+    app.use(cookieParser('Unicornsarereal'));
   app.use(bodyParser.json());
-  app.use(session({ secret: 'Unicornsarereal' }));
+  app.use(session({
+      secret: 'Unicornsarereal',
+      path:"/*",
+      resave: true,
+      saveUninitialized: true,
+      cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) },
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(flash());
@@ -41,10 +57,10 @@ try{
 
   // process the signup form
    app.post('/signup', passport.authenticate('local-signup', {
-       failureFlash : true
+       failureFlash : true,
+           session:true,
    }), function(req, res, next) {
            // handle success
-           console.log(req.user);
            if (req.xhr) { return res.json({ id: req.user._id }); }
            return res.redirect('/');
        },
@@ -53,10 +69,10 @@ try{
        });
    app.post('/login', passport.authenticate('local-login', {
         failureFlash : true,
-        failWithError: true
+        failWithError: true,
+        session:true,
      }), function(req, res, next) {
       // handle success
-      console.log(req.user);
       if (req.xhr) { return res.json({ id: req.user._id }); }
       return res.redirect('/');
     },
@@ -68,24 +84,26 @@ try{
      res.json({authenticated:req.isAuthenticated()});
    });
    app.get('/logout', function(req, res) {
-           req.logout();
-           res.redirect('/');
+       req.logout();
+       req.session.destroy();
+       res.redirect('/');
    });
 
-  app.use('/graphql', bodyParser.json(), apolloExpress({
-    context:{},
-    schema: schema,
-  }));
-
-  app.use('/graphiql', graphiqlExpress({
-    endpointURL: '/graphql',
-  }));
-
-  app.listen(GRAPHQL_PORT, () => console.log(
-    `GraphQL app is now running on http://localhost:${GRAPHQL_PORT}/graphiql`
-  ));
-
-  app.use(express.static(__dirname + '/dist'))
+    app.use('/graphql', bodyParser.json(),isAuthenticated, apolloExpress((req)=> {
+        return {
+            context:{userId:req.user._id},
+            schema: schema,
+        }
+    } ));
+    // app.use('/graphql', bodyParser.json(), graphqlExpress((request) =>{
+    //     console.log(request.session.passport.user);
+    //     return {
+    //         context:request.user,
+    //         schema: schema,
+    //     }}));
+    app.use('/graphiql', graphiqlExpress({
+        endpointURL: '/graphql',
+    }));
 
   app.listen(3000, ()=> console.log("listening on port 3000"));
 } catch(error){

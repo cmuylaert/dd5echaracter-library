@@ -4,10 +4,6 @@ import {
   GraphQLSchema,
   GraphQLString,
   GraphQLInt,
-  GraphQLBoolean,
-  GraphQLFloat,
-  GraphQLEnumType,
-  GraphQLNonNull,
   GraphQLInputObjectType
 } from 'graphql';
 
@@ -15,12 +11,22 @@ import {ObjectID} from 'mongodb';
 
 
 const Schema = (db) => {
-function buildQueryParams(args){
-  const params = {id:args.id};
+function buildQueryParams(args,userId){
+  const params = {};
   if (args.name){
-      params.name= {$regex: args.name, $options: "$i"}
+    params.name= {$regex: args.name, $options: "$i"}
   }
-  return params;
+  const userParams={
+    $and:[
+      {$or:[
+        {public : true},
+        {userid : userId.toString()}
+      ]},
+      params
+    ]};
+
+  console.log(JSON.stringify(userParams));
+  return userParams;
 }
 
 const Class = new GraphQLObjectType({
@@ -29,7 +35,7 @@ const Class = new GraphQLObjectType({
     className: {type:GraphQLString},
     level: {type:GraphQLInt},
   })
-})
+});
 const ClassInput = new GraphQLInputObjectType({
   name:"ClassInput",
   fields:()=>({
@@ -73,8 +79,8 @@ const Query = new GraphQLObjectType({
           type: GraphQLString
         },
       },
-      resolve: (root, params) => {
-        return  db.collection('characters').find(buildQueryParams(params)).toArray();
+      resolve: (root, params,context) => {
+        return  db.collection('characters').find(buildQueryParams(params,context.userId)).toArray();
       }
     },
     character:{

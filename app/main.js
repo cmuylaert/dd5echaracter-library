@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ApolloClient from 'apollo-client';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { Router, Route,  browserHistory } from 'react-router'
 
@@ -11,9 +11,27 @@ import SearchCharacters from './components/SearchCharacters';
 import CharacterSheet from './components/CharacterSheet';
 import Signin from './components/Signin';
 
+const networkInterface = createNetworkInterface({ uri: '/graphql',
+  opts: {
+    credentials: 'same-origin',
+  }});
+
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};  // Create the header object if needed.
+    }
+    // get the authentication token from local storage if it exists
+    req.options.headers.authorization = auth.getToken() || null;
+    next();
+  }
+}]);
+
 const client = new ApolloClient({
-  dataIdFromObject: o => o.id
+  dataIdFromObject: o => o.id,
+  networkInterface
 });
+
 
 class SigninWrapper extends React.Component{
   render(){
