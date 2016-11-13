@@ -11,22 +11,22 @@ import {ObjectID} from 'mongodb';
 
 
 const Schema = (db) => {
-function buildQueryParams(args,userId){
+function buildQueryParams(args){
   const params = {};
   if (args.name){
     params.name= {$regex: args.name, $options: "$i"}
   }
-  const userParams={
+  return params;
+}
+function addUserParams(args,userId){
+  return {
     $and:[
       {$or:[
         {public : true},
         {userid : userId.toString()}
       ]},
-      params
+      args
     ]};
-
-  console.log(JSON.stringify(userParams));
-  return userParams;
 }
 
 const Class = new GraphQLObjectType({
@@ -42,7 +42,7 @@ const ClassInput = new GraphQLInputObjectType({
     className: {type:GraphQLString},
     level: {type:GraphQLInt},
   })
-})
+});
 const Character = new GraphQLObjectType({
   name:"Character",
   fields: ()=>({
@@ -80,7 +80,7 @@ const Query = new GraphQLObjectType({
         },
       },
       resolve: (root, params,context) => {
-        return  db.collection('characters').find(buildQueryParams(params,context.userId)).toArray();
+        return  db.collection('characters').find(addUserParams(buildQueryParams(params),context.userId)).toArray();
       }
     },
     character:{
@@ -91,8 +91,8 @@ const Query = new GraphQLObjectType({
           description: 'search by id field',
         }
       },
-      resolve: (root, params) => {
-        return  db.collection('characters').findOne({_id:ObjectID(params.id)});
+      resolve: (root, params,context) => {
+        return  db.collection('characters').findOne(addUserParams({_id:ObjectID(params.id)},context.userId));
       }
     }
   }
@@ -106,7 +106,8 @@ const Mutation = new GraphQLObjectType({
         name:{type:GraphQLString},
         classes: {type:new GraphQLList(ClassInput)}
       },
-      resolve: async (root, params) => {
+      resolve: async (root, params,context) => {
+        params.userid=context.userId.toString();
         const result = await db.collection('characters').insertOne(params);
         return result.ops[0];
       }
@@ -116,10 +117,10 @@ const Mutation = new GraphQLObjectType({
       args: {
         character:{type:CharacterInput}
       },
-      resolve: async (root, params) => {
+      resolve: async (root, params,context) => {
         const id = ObjectID(params.character.id);
         delete params.character.id;
-        const result = await db.collection('characters').findOneAndUpdate({_id:id},
+        const result = await db.collection('characters').findOneAndUpdate({_id:id, userid:context.userId.toString()},
          {$set:params.character},{returnOriginal:false});
 
         return result.value;
@@ -133,18 +134,18 @@ const Mutation = new GraphQLObjectType({
           description: 'delete by id',
         }
       },
-      resolve: async (root, params) => {
-        const result = await db.collection('characters').deleteOne({_id:ObjectID(params.id)});
+      resolve: async (root, params,context) => {
+        const result = await db.collection('characters').deleteOne({_id:ObjectID(params.id),userid:context.userId.toString()});
         return result.deletedCount>0?params.id:"Character ID not found";
       }
     }
   })
-})
+});
 
   return new GraphQLSchema({
     query: Query,
     mutation: Mutation
   })
-}
+};
 
 export default Schema
