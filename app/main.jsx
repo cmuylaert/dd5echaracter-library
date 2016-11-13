@@ -32,6 +32,7 @@ networkInterface.use([{
 const client = new ApolloClient({
   dataIdFromObject: o => o.id,
   networkInterface,
+  addTypename:false
 });
 
 

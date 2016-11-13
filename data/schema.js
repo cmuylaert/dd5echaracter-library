@@ -55,7 +55,8 @@ const Schema = (db) => {
       race: { type: GraphQLString },
       alignment: { type: GraphQLString },
       classes: { type: new GraphQLList(Class) },
-      attributes: { type: Attributes},
+      attributes: { type: Attributes },
+      xp: { type: GraphQLInt },
     }),
   });
   const CharacterInput = new GraphQLInputObjectType({
@@ -68,7 +69,8 @@ const Schema = (db) => {
       race: { type: GraphQLString },
       alignment: { type: GraphQLString },
       classes: { type: new GraphQLList(ClassInput) },
-      attributes: { type: AttributesInput},
+      attributes: { type: AttributesInput },
+      xp: { type: GraphQLInt },
     }),
   });
 
