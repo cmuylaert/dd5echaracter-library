@@ -9,7 +9,7 @@ module.exports = function () {
     proxy: {
       '*': 'http://localhost:3000',
     },
-  }).listen(3001, 'localhost', function (err, result) {
+  }).listen(3001, 'localhost', (err, result) => {
     if (err) {
       console.log(err);
     }

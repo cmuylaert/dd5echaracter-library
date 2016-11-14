@@ -1,12 +1,12 @@
 import express from 'express';
-import {MongoClient} from 'mongodb';
+import { MongoClient } from 'mongodb';
 import passport from 'passport';
 import flash from 'connect-flash';
 import session from 'express-session';
 import morgan from 'morgan';
-import {apolloExpress, graphiqlExpress} from 'apollo-server';
+import { apolloExpress, graphiqlExpress } from 'apollo-server';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';;
+import cookieParser from 'cookie-parser';
 
 import Users from './auth/users';
 import passportConfig from './auth/passportconfig';
@@ -26,7 +26,7 @@ function isAuthenticated(req, res, next) {
   return res.sendStatus(401);
 }
 
-(async() => {
+(async () => {
   try {
     const db = await MongoClient.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${MONGODB_URL}`);
     const dbClient = Database(db);
@@ -44,7 +44,7 @@ function isAuthenticated(req, res, next) {
       path: '/*',
       resave: true,
       saveUninitialized: true,
-      cookie: {secure: false, maxAge: (4 * 60 * 60 * 1000)},
+      cookie: { secure: false, maxAge: (4 * 60 * 60 * 1000) },
     }));
     app.use(passport.initialize());
     app.use(passport.session());
@@ -54,35 +54,35 @@ function isAuthenticated(req, res, next) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        failureFlash: true,
-        session: true,
-      }), (req, res, next) => {
+      failureFlash: true,
+      session: true,
+    }), (req, res, next) => {
         // handle success
-        if (req.xhr) {
-          return res.json({id: req.user._id});
-        }
-        return res.redirect('/');
-      },
+      if (req.xhr) {
+        return res.json({ id: req.user._id });
+      }
+      return res.redirect('/');
+    },
       (err, req, res, next) => {
         res.send(401, 'signup failed');
       });
     app.post('/login', passport.authenticate('local-login', {
-        failureFlash: true,
-        failWithError: true,
-        session: true,
-      }), (req, res, next) => {
+      failureFlash: true,
+      failWithError: true,
+      session: true,
+    }), (req, res, next) => {
         // handle success
-        if (req.xhr) {
-          return res.json({id: req.user._id});
-        }
-        return res.redirect('/');
-      },
+      if (req.xhr) {
+        return res.json({ id: req.user._id });
+      }
+      return res.redirect('/');
+    },
       (err, req, res, next) => {
         res.send(401, 'login failed');
       },
     );
     app.get('/isloggedin', (req, res) => {
-      res.json({authenticated: req.isAuthenticated()});
+      res.json({ authenticated: req.isAuthenticated() });
     });
     app.get('/logout', (req, res) => {
       req.logout();
@@ -91,7 +91,7 @@ function isAuthenticated(req, res, next) {
     });
 
     app.use('/graphql', bodyParser.json(), isAuthenticated, apolloExpress(req => ({
-      context: {userId: req.user._id},
+      context: { userId: req.user._id },
       schema,
     })));
 
@@ -99,7 +99,7 @@ function isAuthenticated(req, res, next) {
       endpointURL: '/graphql',
     }));
 
-    if (process.env.NODE_ENV === 'DEV'){
+    if (process.env.NODE_ENV === 'DEV') {
       require('./bundler.js')();
     }
 
