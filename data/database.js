@@ -1,6 +1,24 @@
 import { ObjectID } from 'mongodb';
 
 export default (db) => {
+  function emptyCharacter() {
+    return {
+      name: null,
+      background: null,
+      alignment: null,
+      race: null,
+      classes: [],
+      attributes: {
+        STR: null,
+        DEX: null,
+        CON: null,
+        INT: null,
+        WIS: null,
+        CHA: null,
+      },
+    };
+  }
+
   function buildQueryParams(args) {
     const params = {};
     if (args.name) {
@@ -30,16 +48,25 @@ export default (db) => {
       const id = ObjectID(params.character.id);
       // eslint-disable-next-line no-param-reassign
       delete params.character.id;
-      const result = await db.collection('characters').findOneAndUpdate({ _id: id, userid: userId.toString() },
+      const result = await db.collection('characters').findOneAndUpdate(
+        {
+          _id: id,
+          userid: userId.toString(),
+        },
         { $set: params.character }, { returnOriginal: false });
       return result.value;
     },
     newCharacter: async (params, userId) => {
-      const result = await db.collection('characters').insertOne(Object.assign(params, { userid: userId.toString() }));
+      const newCharacter = Object.assign({}, emptyCharacter(),
+        params, { userid: userId.toString() });
+      const result = await db.collection('characters').insertOne(newCharacter);
       return result.ops[0];
     },
     deleteCharacter: async (id, userId) => {
-      const result = await db.collection('characters').deleteOne({ _id: ObjectID(id), userid: userId.toString() });
+      const result = await db.collection('characters').deleteOne({
+        _id: ObjectID(id),
+        userid: userId.toString(),
+      });
       return result.deletedCount > 0 ? id : 'Character ID not found';
     },
   };
