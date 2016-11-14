@@ -108,7 +108,7 @@ const Schema = (db) => {
           name: { type: GraphQLString },
           classes: { type: new GraphQLList(ClassInput) },
         },
-        resolve: async (root, params, context) => db.newCharacter(params,context.userId),
+        resolve: async (root, params, context) => db.newCharacter(params, context.userId),
       },
       updateCharacter: {
         type: Character,
