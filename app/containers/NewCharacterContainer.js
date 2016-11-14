@@ -19,15 +19,12 @@ export default graphql(NewCharacterMutation, {
     mutate: ({ name, classes }) => mutate({
       variables: { name, classes },
       updateQueries: {
-        CharacterQuery: (prev, { mutationResult }) => {
-          const newCharacter = mutationResult.data.newCharacter;
-          console.log(prev);
-          return update(prev, {
-            characters: {
-              $unshift: [newCharacter],
-            },
-          });
-        },
+        CharacterQuery: (prev, { mutationResult }) => update(prev, {
+          characters: {
+            $unshift: [mutationResult.data.newCharacter],
+          },
+        })
+        ,
       },
     }),
   }),
