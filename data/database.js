@@ -16,6 +16,7 @@ export default (db) => {
         WIS: null,
         CHA: null,
       },
+      public: false,
     };
   }
 

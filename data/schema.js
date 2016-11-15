@@ -5,6 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLInputObjectType,
+  GraphQLBoolean,
 } from 'graphql';
 
 
@@ -57,6 +58,7 @@ const Schema = (db) => {
       classes: { type: new GraphQLList(Class) },
       attributes: { type: Attributes },
       xp: { type: GraphQLInt },
+      public: { type: GraphQLBoolean },
     }),
   });
   const CharacterInput = new GraphQLInputObjectType({
@@ -71,6 +73,7 @@ const Schema = (db) => {
       classes: { type: new GraphQLList(ClassInput) },
       attributes: { type: AttributesInput },
       xp: { type: GraphQLInt },
+      public: { type: GraphQLBoolean },
     }),
   });
 

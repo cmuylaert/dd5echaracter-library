@@ -20,6 +20,7 @@ const fullCharacterFragment = createFragment(gql`
           WIS
           CHA
       }
+      public
   }
 `);
 
